@@ -1,6 +1,46 @@
 
 #include <iostream>
 using namespace std;
+int posicion_random(int num) {
+    return rand() % num;
+}
+void agregar_obstáculos(char** matriz,int obstáculos,int filas,int columnas) {
+    bool flag = false;
+    for (int i = 0; i < obstáculos; i++)  {
+        
+        do {
+            int fila = posicion_random(filas);
+            int columna = posicion_random(columnas);
+            if (matriz[fila][columna] != '#') {
+                matriz[fila][columna] = '#';
+                flag = false;
+            }
+            else {
+                flag = true;
+            }
+        } while (flag);
+    }
+}
+char** Llenar_Matriz(int fil,int col) {
+        char** matriz = new char* [fil];
+        for (int i = 0; i < fil; i++) {
+            matriz[i] = new char[col];
+            for (int j = 0; j < col; j++) {
+                matriz[i][j] = '-';
+            }
+        }
+        return matriz;
+}
+void imprimir_matriz(char** matriz,int filas,int col) {
+    for (int i = 0; i < filas; i++) {
+        cout << '|';
+        for (int j = 0; j < col; j++) {
+            cout << " '" << matriz[i][j] << "' ";
+        }
+        cout << '|';
+        cout << endl;
+    }
+}
 void DiscoX0R() {
     int salir = 0;
     while (salir != 4) {
@@ -87,26 +127,26 @@ void DiscoX0R() {
 }
 void matrizObs() {
     int filas = 0, col = 0, obs = 0;
-    cout << "\n --Matriz con Obstaculos--";
-    cout << "Ingrese filas: ";
-    cin >> filas;
+    cout << "\n --Matriz con Obstaculos--\n";
+    do {
+        cout << "Ingrese filas: ";
+        cin >> filas;
+    } while (filas < 5);
+    do{
+    cout << "Ingrese columnas: ";
     cout << "Ingrese columnas: ";
     cin >> col;
+    } while (col < 5);
+    do{
     cout << "Ingrese obstaculos: ";
     cin >> obs;
-    Llenar_Matriz(filas, col);
+    } while (obs < 1 || obs > (col*filas)-1);//lo repite hasta que ingrese un numero mayor a 1 y menor a columnas*filas-1
 
+    char** matriz = Llenar_Matriz(filas, col);
+    agregar_obstáculos(matriz, obs, filas, col);
+    imprimir_matriz(matriz, filas, col);
 }
-char** Llenar_Matriz(int fil,int col) {
-        char** matriz = new char* [fil];
-        for (int i = 0; i < fil; i++) {
-            matriz[i] = new char[col];
-            for (int j = 0; j < col; j++) {
-                matriz[i][j] = '-';
-            }
-        }
-        return matriz;
-}
+
 int main() {
     int salir = 0;
     while (salir != 2) {
